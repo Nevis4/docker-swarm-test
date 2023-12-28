@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  simpleapi:
+    image: docker_swarm_test-simpleapi:latest
+    ports:
+      - "5000:80"
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+    networks:
+      - mynetwork
+
+  reactapp:
+    image: docker_swarm_test-reactapp:latest
+    ports:
+      - "3000:80"
+    depends_on:
+      - simpleapi
+    deploy:
+      restart_policy:
+        condition: on-failure
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
